@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn 
-import os.path 
 import mymodel
 import numpy as np
 import customDataset
@@ -11,11 +10,13 @@ import torchvision
 train_dataset = customDataset.NutritionDataset(csv_file = "trainingdata.csv")
 test_dataset = customDataset.NutritionDataset(csv_file = "testingdata.csv")
 
-global_loss = nn.L1Loss() #next try cross entropy
-largeLearningRate = 0.01
+global_loss = nn.MSELoss() #next try cross entropy
+testing_loss = nn.L1Loss()
+#global_loss = nn.CrossEntropyLoss()
+largeLearningRate = 0.0001
 fineTuneLearningRate = 0.0001
-globalBatchSize = 1
-wholeTrain = 5
+globalBatchSize = 1 #8 or 16 or 32
+wholeTrain = 20
 
 global_path = "pytorch_attempt.pth"
 checkpoint_path = "pytorch_attempt_checkpoint.pth"
@@ -92,7 +93,7 @@ def test_model_all():
 
     total = 0
     totalLoss = 0
-    test_loader = torch.utils.data.DataLoader(dataset = train_dataset, batch_size = 1, shuffle = False)
+    test_loader = torch.utils.data.DataLoader(dataset = test_dataset, batch_size = globalBatchSize, shuffle = False)
 
     for i, (obj) in enumerate(test_loader):
         data = obj['data'][0]
@@ -102,10 +103,11 @@ def test_model_all():
         label.to(torch.float32)
 
         y = model(data)
-        loss = global_loss(y, label)
-        totalLoss += loss
+        #loss = global_loss(y, label)
+        loss2 = testing_loss(y, label)
+        totalLoss += loss2
         
-        print(f"loss: {loss}")
+        print(f"loss: {loss2}")
         print(f"input: {data.detach().cpu().numpy()}")
         print(f"result: {y.detach().cpu().numpy()}")
         print(f"label: {label.detach().cpu().numpy().reshape(-1)}")
@@ -123,7 +125,8 @@ def test_model_all():
         print(f'RMSE is {total/len(test_dataset)}')'''
 
 if __name__ == "__main__":
-    #train_model()
-    load_checkpoint_train_model()
+    train_model()
+    #load_checkpoint_train_model()
+    #load_checkpoint_train_model()
     #print(train_dataset)
     test_model_all()
