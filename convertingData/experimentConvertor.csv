@@ -1,0 +1,21 @@
+﻿nutrients,,,,
+3,DHA mg/g,Omega3 mg/g,Omega6 mg/g,
+ingredients,,,,
+corn,0.2,0.1,3,
+DHA oil,200,0,0,
+wheat,10,20,0.4,
+Diet1,,,,
+average intake g:,20,,,
+corn % of diet,70,,,
+DHA oil,20,,,
+wheat,10,,,
+Diet2,,,,
+average intake g:,30,,,
+corn,20,,,
+DHA oil,50,,,
+wheat,30,,,
+,,,,
+output data,,,,
+4,growth rate,feed intake,meat quality?,lifespan
+Diet1,20,10,20,2
+Diet2,10,4,10,10

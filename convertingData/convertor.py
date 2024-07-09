@@ -17,37 +17,49 @@ def load_file(filename):
 
 def fromFile(filename):
     file = load_file(filename)
-    nutrients = file[0][1:]
+    numNutrients = file[1][0]
+    nutrients = file[1][1:numNutrients+1]
 
-    non_nutrients = file[2:]
-    curr = 2
+    curr = 3
 
     ingredients = {}
     
     while(len(file[curr]) != 1):
         ingredient = file[curr[0]]
-        composition = file[curr][1:]
+        composition = file[curr][1:numNutrients+1]
         composition = np.float_32(composition)
         ingredients[ingredient] = composition
 
         curr += 1
 
-    toReturn = {}
-    while curr < len(file):
+    toReturn = []
+
+    while len(file[curr][0]) != 0:
         dietName = file[curr][0]
+        curr += 1
+        averageIntakeG = float(file[curr][1])
         curr += 1
 
         result = np.zeros(len(nutrients))
-        while(curr < len(file) and len(file[curr]) != 1):
+        while(len(file[curr][0]) != 0 and len(file[curr][1]) != 0):
             ingredient = file[curr][0]
-            amount = eval(file[curr][1])
+            amount = float(file[curr][1]) * 0.01 * averageIntakeG
             result += ingredients[ingredients] * amount
             curr += 1
-        toReturn[dietName] = result
-    print(toReturn)
-    return toReturn
+        toReturn.append(result)
 
-
+    answer = {}
+    answer["nutrients"] = nutrients
+    answer["inputs"] = toReturn
+    answer["outputs"] = []
+    curr += 2
+    numOutputs = file[curr][0]
+    answer["outputParameters"] = file[curr][1:numOutputs+1]
+    curr += 1
+    while(curr < len(file) and len(file[curr][0]) != 0):
+        answer["outputs"].append(file[curr][1:numOutputs+1])
+        curr += 1
+    return answer
 
 
 # Replace with your USDA FoodData Central API key
@@ -96,8 +108,7 @@ def nutrient_data():
         print(nutrient_info)
 
 if __name__ == "__main__":
-    nutrient_data()
-
+    print(fromFile("experimentConvertor.csv"))
 
 
 #questions: any reccommended APIs?
