@@ -8,7 +8,7 @@ from torchvision import transforms, utils
 import torchvision
 
 train_dataset = customDataset.NutritionDataset(csv_file = "trainingdata.csv")
-test_dataset = customDataset.NutritionDataset(csv_file = "testingdata.csv")
+test_dataset = customDataset.NutritionDataset(csv_file = "trainingdata.csv")
 
 global_loss = nn.MSELoss() #next try cross entropy
 testing_loss = nn.L1Loss()
@@ -17,6 +17,9 @@ largeLearningRate = 0.0001
 fineTuneLearningRate = 0.0001
 globalBatchSize = 1 #8 or 16 or 32
 wholeTrain = 20
+
+#test the model effectiveness
+#databases 
 
 global_path = "pytorch_attempt.pth"
 checkpoint_path = "pytorch_attempt_checkpoint.pth"

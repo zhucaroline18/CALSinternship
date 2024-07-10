@@ -17,15 +17,15 @@ def load_file(filename):
 
 def fromFile(filename):
     file = load_file(filename)
-    numNutrients = file[1][0]
-    nutrients = file[1][1:numNutrients+1]
+    numNutrients = eval(file[1][0])
+    nutrients = file[1][1:(numNutrients+1)]
 
     curr = 3
 
     ingredients = {}
     
     while(len(file[curr]) != 1):
-        ingredient = file[curr[0]]
+        ingredient = file[eval(curr[0])]
         composition = file[curr][1:numNutrients+1]
         composition = np.float_32(composition)
         ingredients[ingredient] = composition
@@ -53,7 +53,7 @@ def fromFile(filename):
     answer["inputs"] = toReturn
     answer["outputs"] = []
     curr += 2
-    numOutputs = file[curr][0]
+    numOutputs = eval(file[curr][0])
     answer["outputParameters"] = file[curr][1:numOutputs+1]
     curr += 1
     while(curr < len(file) and len(file[curr][0]) != 0):
