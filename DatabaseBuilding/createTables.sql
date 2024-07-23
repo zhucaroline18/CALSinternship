@@ -88,18 +88,19 @@ CREATE TABLE Diets (
     Fe float, 
     Mn float, 
     Se float, 
-    Zn float
+    Zn float,
+    UNIQUE( timePeriod, species, study, diet_name)
 );
 
 CREATE TABLE Results (
     result_id INTEGER PRIMARY KEY,
-    diet_folower_id Integer references DietFollower,
-    individual_id INTEGER references Individuals,
+    --diet_folower_id Integer references DietFollower,
+    --individual_id INTEGER references Individuals,
     average_feed_intake float,
     bodyweightgain float,
     akp float, 
     alt float, 
-    gluclose float, 
+    glucose float, 
     nefa float, 
     pip float, 
     tc float, 
@@ -140,10 +141,12 @@ CREATE TABLE OutputTypes (
 
 CREATE TABLE DietFollower (
     diet_follower_id INTEGER PRIMARY KEY,
-    diet_id INTEGER REFERENCES Diets,
+    diet_id INTEGER REFERENCES Diets(diet_id),
     pen VARCHAR(20), 
     consumption FLOAT,
-    total_feed_intake FLOAT
+    total_feed_intake FLOAT,
+    result_id INTEGER references Results(result_id),
+    UNIQUE (pen, diet_id)
 );
 
 CREATE TABLE Individuals (
@@ -239,9 +242,10 @@ CREATE TABLE Individuals (
     Fe float, 
     Mn float, 
     Se float, 
-    Zn float
+    Zn float,
+    result_id INTEGER references Results(result_id),
+    UNIQUE (pen, timePeriod, species, study, diet_name)
 );
-
 
 CREATE TABLE NutrientTypes (
     type VARCHAR(100), 
