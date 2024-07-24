@@ -38,8 +38,8 @@ insert_individual += ", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 
 insert_follower = "INSERT INTO DietFollower (diet_follower_id, pen, diet_id, consumption, total_feed_intake, result_id) VALUES (NULL, ?, (SELECT diet_id FROM Diets WHERE timePeriod = ? and species = ? and study = ? and diet_name = ?), ?, ?, "
 
-insert_result = "INSERT INTO RESULTS(result_id, average_feed_intake, bodyweightgain, akp, alt, glucose, nefa, pip, tc, tg, uric_acid, bmTOR, bs6k1, b4ebp1, bmurf1, bmafbx, bampk, lmtor, ls6lk1, l4ebp1, lmurf1, lmafbx, lampk, bph, bwhc, bhardness, bspringiness, bchewiness, bcohesiveness, bgumminess, bresilience, tph, twhc, thardness, tspringiness, tchewiness)"
-insert_result += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+insert_result = "INSERT INTO RESULTS(result_id, average_feed_intake, bodyweightgain, akp, alt, glucose, nefa, pip, tc, tg, trap, uric_acid, bmTOR, bs6k1, b4ebp1, bmurf1, bmafbx, bampk, lmtor, ls6lk1, l4ebp1, lmurf1, lmafbx, lampk, bph, bwhc, bhardness, bspringiness, bchewiness, bcohesiveness, bgumminess, bresilience, tph, twhc, thardness, tspringiness, tchewiness)"
+insert_result += "VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 insert_result += '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '
 insert_result += '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
 
@@ -51,7 +51,7 @@ getAllDietFollower += "df.total_feed_intake * d.crude_protein, df.total_feed_int
 getAllDietFollower += "df.total_feed_intake * d.ether_extract, df.total_feed_intake * d.sfa, df.total_feed_intake * d.mufa, df.total_feed_intake * d.pufa, df.total_feed_intake * d.n3pufa, df.total_feed_intake * d.n6pufa, df.total_feed_intake * d.n3n6ratio, df.total_feed_intake * d.c14,df.total_feed_intake * d.c150,df.total_feed_intake * d.c151,df.total_feed_intake * d.c160,df.total_feed_intake * d.c161, df.total_feed_intake * d.c170, df.total_feed_intake * d.c171, df.total_feed_intake * d.c180, df.total_feed_intake * d.c181, df.total_feed_intake * d.c182cisn6la,df.total_feed_intake * d.c183cisn3ala, df.total_feed_intake * d.c200, df.total_feed_intake * d.c201,c204n6ara, df.total_feed_intake * d.c205n3epa, df.total_feed_intake * d.c220, df.total_feed_intake * d.c221, df.total_feed_intake * d.c226n3dha, df.total_feed_intake * d.c240, "
 getAllDietFollower += "df.total_feed_intake * d.ash, df.total_feed_intake * d.vitamina, df.total_feed_intake * d.beta_carotene, df.total_feed_intake * d.vitamind3, df.total_feed_intake * d.ohd3_25, df.total_feed_intake * d.vitamine, df.total_feed_intake * d.vitamink, df.total_feed_intake * d.astaxanthinast, df.total_feed_intake * d.biotin, df.total_feed_intake * d.choline, df.total_feed_intake * d.folic_acid, df.total_feed_intake * d.niacin, df.total_feed_intake * d.pantothenic_acid, df.total_feed_intake * d.riboflavin, df.total_feed_intake * d.thiamin, df.total_feed_intake * d.pyridoxine, df.total_feed_intake * d.vitaminb12, " 
 getAllDietFollower += "df.total_feed_intake * d.calcium, df.total_feed_intake * d.total_phosphorus, df.total_feed_intake * d.inorganic_available_P, df.total_feed_intake * d.caPratio, df.total_feed_intake * d.Na, df.total_feed_intake * d.Cl, df.total_feed_intake * d.K, df.total_feed_intake * d.Mg, df.total_feed_intake * d.S, df.total_feed_intake * d.Cu, df.total_feed_intake * d.I, df.total_feed_intake * d.Fe, df.total_feed_intake * d.Mn, df.total_feed_intake * d.Se, df.total_feed_intake * d.Zn, "
-getAllDietFollower += 'results.average_feed_intake, results.bodyweightgain, results.akp, results.alt, results.glucose, results.nefa, results.pip, results.tc, results.tg, results.uric_acid, results.bmTOR, results.bs6k1, results.b4ebp1, results.bmurf1, results.bmafbx, results.bampk, results.lmtor, results.ls6lk1, results.l4ebp1, results.lmurf1, results.lmafbx, results.lampk, results.bph, results.bwhc, results.bhardness, results.bspringiness, results.bchewiness, results.bcohesiveness, results.bgumminess, results.bresilience, results.tph, results.twhc, results.thardness, results.tspringiness, results.tchewiness '
+getAllDietFollower += 'results.average_feed_intake, results.bodyweightgain, results.akp, results.alt, results.glucose, results.nefa, results.pip, results.tc, results.tg, results.trap, results.uric_acid, results.bmTOR, results.bs6k1, results.b4ebp1, results.bmurf1, results.bmafbx, results.bampk, results.lmtor, results.ls6lk1, results.l4ebp1, results.lmurf1, results.lmafbx, results.lampk, results.bph, results.bwhc, results.bhardness, results.bspringiness, results.bchewiness, results.bcohesiveness, results.bgumminess, results.bresilience, results.tph, results.twhc, results.thardness, results.tspringiness, results.tchewiness '
 getAllDietFollower += 'FROM DietFollower AS df JOIN results on df.result_id = results.result_id JOIN diets AS d on d.diet_id = df.diet_id '
 
 getAllIndividual = 'SELECT ME_kcal_per_g, Overall_Carbohydrate, NDF, ADF, NFC, crude_fiber, starch,'
@@ -59,7 +59,7 @@ getAllIndividual += "crude_protein, arginine, histidine, isoleucine,leucine ,lys
 getAllIndividual += "ether_extract, sfa, mufa, pufa, n3pufa, n6pufa, n3n6ratio, c14,c150,c151,c160,c161, c170, c171, c180, c181, c182cisn6la,c183cisn3ala, c200, c201,c204n6ara, c205n3epa, c220, c221, c226n3dha, c240, "
 getAllIndividual += "ash, vitamina, beta_carotene, vitamind3, ohd3_25, vitamine, vitamink, astaxanthinast, biotin, choline, folic_acid, niacin, pantothenic_acid, riboflavin, thiamin, pyridoxine, vitaminb12, " 
 getAllIndividual += "calcium, total_phosphorus, inorganic_available_P, caPratio, Na, Cl, K, Mg, S, Cu, I, Fe, Mn, Se, Zn, "
-getAllIndividual += 'results.average_feed_intake, results.bodyweightgain, results.akp, results.alt, results.glucose, results.nefa, results.pip, results.tc, results.tg, results.uric_acid, results.bmTOR, results.bs6k1, results.b4ebp1, results.bmurf1, results.bmafbx, results.bampk, results.lmtor, results.ls6lk1, results.l4ebp1, results.lmurf1, results.lmafbx, results.lampk, results.bph, results.bwhc, results.bhardness, results.bspringiness, results.bchewiness, results.bcohesiveness, results.bgumminess, results.bresilience, results.tph, results.twhc, results.thardness, results.tspringiness, results.tchewiness '
+getAllIndividual += 'results.average_feed_intake, results.bodyweightgain, results.akp, results.alt, results.glucose, results.nefa, results.pip, results.tc, results.tg, results.trap, results.uric_acid, results.bmTOR, results.bs6k1, results.b4ebp1, results.bmurf1, results.bmafbx, results.bampk, results.lmtor, results.ls6lk1, results.l4ebp1, results.lmurf1, results.lmafbx, results.lampk, results.bph, results.bwhc, results.bhardness, results.bspringiness, results.bchewiness, results.bcohesiveness, results.bgumminess, results.bresilience, results.tph, results.twhc, results.thardness, results.tspringiness, results.tchewiness '
 getAllIndividual += 'FROM individuals JOIN results on individuals.result_id = results.result_id '
 
 
@@ -275,13 +275,13 @@ def searchStudies(studies):
 
 if __name__ == "__main__":
     #insertDiets('diet_only.csv')
-    #insertIndividual('individuals_only2.csv', 93)
-    #insertDietFollowers('DietFollowersOnly.csv', 7)
+    insertIndividual('individuals2.csv', 93)
+    insertDietFollowers('dietFollowers2.csv', 7)
     conn = sqlite3.connect('nutrition.db')
     cur = conn.cursor()
 
     #print(searchStudies(["broiler DHA"]))
-    print(searchSpecificNutrient('calcium'))
+    #print(searchSpecificNutrient('calcium'))
 
     '''cur.execute(getAllDietFollower)
     rows = cur.fetchall()

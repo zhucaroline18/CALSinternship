@@ -94,8 +94,6 @@ CREATE TABLE Diets (
 
 CREATE TABLE Results (
     result_id INTEGER PRIMARY KEY,
-    --diet_folower_id Integer references DietFollower,
-    --individual_id INTEGER references Individuals,
     average_feed_intake float,
     bodyweightgain float,
     akp float, 
@@ -105,6 +103,7 @@ CREATE TABLE Results (
     pip float, 
     tc float, 
     tg float, 
+    trap float,
     uric_acid float, 
     bmTOR float, 
     bs6k1 float,
