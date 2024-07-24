@@ -1,13 +1,10 @@
-
 import numpy as np
-from csv import reader
-from scipy import stats
 import pandas as pd
 
 # columns is a list of the column names of the columns of interest.
 # this can refer to an input or output in our data where the data
 # represents nutritional intake inputs for chickens and the health 
-# parameter outputs 
+# parameter outputs. The columns of interest should only include numerical values.
 # filename is the location of the csv file that contains the data.
 # The function returns the correlation matrix between the columns 
 # of interest. the correlation matrix refers to the Pearson correlation 
@@ -21,3 +18,6 @@ def ANOVA(columns, filename):
     correlation_matrix = df_selected.corr(method = 'pearson')
 
     return correlation_matrix
+
+if __name__ == "__main__":
+    print(ANOVA(['breast PH','thigh PH'], 'totalDataLLM.csv'))
