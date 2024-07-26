@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.stats import pearsonr
 
 # columns is a list of the column names of the columns of interest.
 # this can refer to an input or output in our data where the data
@@ -11,7 +12,7 @@ import pandas as pd
 # matrix where r = 1 represents a perfect positive linear relationship, 
 # r = -1 represents a perfect negative linear relationship and r = 0
 # represents no linear relationships 
-def ANOVA(columns, filename):
+def pearson_correlation(columns, filename):
     df = pd.read_csv(filename)
 
     df_selected = df[columns]
@@ -19,5 +20,31 @@ def ANOVA(columns, filename):
 
     return correlation_matrix
 
+def getColumns(filename):
+    df = pd.read_csv(filename)
+    return df.columns
+
+def pearson_correlation2(columns, filename):
+    df_original = pd.read_csv(filename)
+    df = df_original[columns].dropna()   #not sure if i should drop na or not?
+    corr_matrix = df.corr()
+
+    def corr_pvalues(df):
+        df = df.dropna()
+        pvals = pd.DataFrame(np.ones((df.shape[1], df.shape[1])), columns=df.columns, index=df.columns)
+        for col1 in df.columns:
+            for col2 in df.columns:
+                if col1 != col2:
+                    _, pval = pearsonr(df[col1], df[col2])
+                    pvals.loc[col1, col2] = pval
+        return pvals
+    
+    pval_matrix = corr_pvalues(df)
+    print("Correlation matrix:\n", corr_matrix)
+    print("\nP-value matrix:\n", pval_matrix)
+
 if __name__ == "__main__":
-    print(ANOVA(['breast PH','thigh PH'], 'totalDataLLM.csv'))
+    columns = ['Vitamin A IU/kg','thigh PH', 'beta-carotene']
+    print(pearson_correlation(columns, 'totalDataLLM.csv'))
+    #print(getColumns('totalDataLLM.csv'))
+    pearson_correlation2(columns, 'totalDataLLM.csv')
