@@ -1,5 +1,5 @@
 import os 
-os.environ['GROQ_API_KEY'] = "?"
+# os.environ['GROQ_API_KEY'] = "?"
 from groq import Groq
 import re
 
@@ -49,7 +49,8 @@ get_columns:
 e.g. get_columns()
 returns a list of the available columns to examine the correlations between. The first 5 columns contain string data and the rest contain numerical data
 
-
+In each session, you will be called until you have an answer, in which case, output it as the Answer.
+Now begin.
 """.strip()
 
 def pearson_correlation(columns):
@@ -64,3 +65,39 @@ def get_columns():
     df = pd.read_csv(filename)
     return df.columns
 
+agent = Agent(client = client, system = system_prompt)
+
+def loop(max_iterations = 20, query: str = ""):
+    agent = Agent(client=client, system=system_prompt)
+
+    tools = ["pearson_correlation", "get_columns"]
+
+    next_prompt = query
+
+    i = 0
+
+    while i < max_iterations:
+        i += 1
+        result = agent(next_prompt)
+        print(result)
+
+        if "PAUSE" in result and "Action" in result:
+            action = re.findall(r"Action: ([a-z_]+): (.+)", result, re.IGNORECASE)
+            chosen_tool = action[0][0]
+            arg = action[0][1]
+
+            if chosen_tool in tools:
+                result_tool = eval(f"{chosen_tool}('{arg}')")
+                next_prompt = f"Observation: {result_tool}"
+
+            else:
+                next_prompt = "Observation: Tool not found"
+
+            print(next_prompt)
+            continue
+
+        if "Answer" in result:
+            break
+
+if __name__ == "__main__":
+    loop(query = "is there a significant relationship between Vitamin A IU/g fed to a chicken and the chicken's thigh PH?")
