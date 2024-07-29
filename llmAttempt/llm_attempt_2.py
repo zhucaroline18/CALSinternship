@@ -2,6 +2,7 @@ import os
 os.environ['GROQ_API_KEY'] = "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"
 from groq import Groq
 import re
+import pandas as pd
 
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
@@ -97,10 +98,6 @@ def get_planet_mass(planet) -> float:
             return 4.867e24
         case _:
             return 0.0
-
-neil_tyson = Agent(client=client, system=system_prompt)
-import re
-
 
 def loop(max_iterations=10, query: str = ""):
 

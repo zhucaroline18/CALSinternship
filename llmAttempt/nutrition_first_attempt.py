@@ -1,7 +1,10 @@
 import os 
-# os.environ['GROQ_API_KEY'] = "?"
+os.environ['GROQ_API_KEY'] = "?"
 from groq import Groq
 import re
+import pandas as pd
+import numpy as np
+from scipy.stats import pearsonr
 
 client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
@@ -37,40 +40,75 @@ Use Thought to describe your thoughts about the question you have been asked.
 Use Action to run one of the actions available to you - then return PAUSE.
 Observation will be the result of running those actions.
 
+You will be asked questions about nutrient intake and how it affects chicken health
+
 Your available actions are:
 
 pearson_correlation:
 e.g. pearson_correlation(['Vitamin A IU/kg', 'thigh PH', 'beta-carotene'])
 takes in a list of column names regarding the columns of interest. This can refer to a nutrient intake inputs for chickens or the chicken health parameter outputs. The columns of interest should only include numerical values. 
-The function returns two matrices. The first is the correlation matrix between the columns of interest. The correlation matrix refers to the Pearson correlation matrix where r = 1 represents a perfect positive linear relationship, r = -1 represents a perfect negative linear relationship and r = 0 represents no linear relationships. 
-The second value it returns is the p value matrix. It tells you the p-value of each relationship and whether or not that correlation is significant.
+The function returns the correlation matrix between the columns of interest. The correlation matrix refers to the Pearson correlation matrix where r = 1 represents a perfect positive linear relationship, r = -1 represents a perfect negative linear relationship and r = 0 represents no linear relationships. 
 
-get_columns:
-e.g. get_columns()
-returns a list of the available columns to examine the correlations between. The first 5 columns contain string data and the rest contain numerical data
+p_value_of_correlation:
+e.g. p_value_of_correlation(['Vitamin A IU/kg', 'thigh PH', 'beta-carotene'])
+takes in a list of column names regarding the columns of interest. This can refer to a nutrient intake inputs for chickens or the chicken health parameter outputs. The columns of interest should only include numerical values. 
+The value it returns is the p value matrix. It tells you the p-value of each relationship and whether or not that correlation is significant.
+
+get_inputs:
+e.g. get_inputs()
+returns a list of the available input columns to examine. The first 5 columns contain string data and the rest contain numerical data
+
+get_outputs:
+e.g. get_outputs()
+returns a list of the available output columns to examine.
 
 In each session, you will be called until you have an answer, in which case, output it as the Answer.
 Now begin.
 """.strip()
 
 def pearson_correlation(columns):
+    
+    df_original = pd.read_csv(filename)
+    for i in columns:
+        if i not in df_original.columns: 
+            return f"{i} not a valid column"
+    df = df_original[columns].dropna() # not sure if i should drop na or not?
+    corr_matrix = df.corr()
+    return(corr_matrix)
+
+def p_value_of_correlation(columns):
+    df_original = pd.read_csv(filename)
+    df = df_original[columns].dropna() 
+    for i in columns:
+        if i not in df.columns: 
+            return f"{i} not a valid column"
+    corr_matrix = df.corr()
+
+    def corr_pvalues(df):
+        df = df.dropna()
+        pvals = pd.DataFrame(np.ones((df.shape[1], df.shape[1])), columns=df.columns, index=df.columns)
+        for col1 in df.columns:
+            for col2 in df.columns:
+                if col1 != col2:
+                    _, pval = pearsonr(df[col1], df[col2])
+                    pvals.loc[col1, col2] = pval
+        return pvals
+    
+    return corr_pvalues(df).to_numpy()
+
+def get_inputs():
     df = pd.read_csv(filename)
+    return df.columns[:93].tolist()
 
-    df_selected = df[columns]
-    correlation_matrix = df_selected.corr(method = 'pearson')
-
-    return correlation_matrix
-
-def get_columns():
+def get_outputs():
     df = pd.read_csv(filename)
-    return df.columns
+    return df.columns[93:].tolist()
 
-agent = Agent(client = client, system = system_prompt)
-
-def loop(max_iterations = 20, query: str = ""):
+#add the observation to memory
+def loop(max_iterations = 25, query: str = ""):
     agent = Agent(client=client, system=system_prompt)
 
-    tools = ["pearson_correlation", "get_columns"]
+    tools = ["pearson_correlation", "p_value_of_correlation", "get_inputs", "get_outputs"]
 
     next_prompt = query
 
@@ -82,12 +120,18 @@ def loop(max_iterations = 20, query: str = ""):
         print(result)
 
         if "PAUSE" in result and "Action" in result:
-            action = re.findall(r"Action: ([a-z_]+): (.+)", result, re.IGNORECASE)
-            chosen_tool = action[0][0]
-            arg = action[0][1]
+            pattern = (r"Action:\s*(\w+)\s*\(([^)]*)\)")
 
-            if chosen_tool in tools:
-                result_tool = eval(f"{chosen_tool}('{arg}')")
+            match = re.search(pattern, result)
+
+            if match:
+                method_name = match.group(1)
+                data_list = match.group(2)
+            else:
+                print("No match found")
+
+            if method_name in tools:
+                result_tool = eval(f"{method_name}({data_list})")
                 next_prompt = f"Observation: {result_tool}"
 
             else:
@@ -100,4 +144,4 @@ def loop(max_iterations = 20, query: str = ""):
             break
 
 if __name__ == "__main__":
-    loop(query = "is there a significant relationship between Vitamin A IU/g fed to a chicken and the chicken's thigh PH?")
+    loop(query = "what should I feed a chicken in order to get a higher thigh PH?")
