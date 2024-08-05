@@ -15,8 +15,6 @@ def ANOVA(index_of_parameter, dataset):
         for pen in group: 
             x
             
-    
-
 
 def load_file(filename, max_rows):
     with open(filename) as file:

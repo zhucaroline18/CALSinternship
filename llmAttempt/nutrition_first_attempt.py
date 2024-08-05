@@ -33,6 +33,7 @@ class Agent:
         )
         return completion.choices[0].message.content
 
+#specify to look at all the nutrients
 system_prompt = """
 You run in a loop of Thought, Action, PAUSE, Observation.
 At the end of the loop you output an Answer
@@ -66,18 +67,19 @@ In each session, you will be called until you have an answer, in which case, out
 Now begin.
 """.strip()
 
+#def get_all_data()
+
 def pearson_correlation(columns):
-    
     df_original = pd.read_csv(filename)
     for i in columns:
-        if i not in df_original.columns: 
+        if i not in df_original.columns:
             return f"{i} not a valid column"
     df = df_original[columns].dropna() # not sure if i should drop na or not?
     corr_matrix = df.corr()
     return(corr_matrix)
 
-def p_value_of_correlation(columns):
-    df_original = pd.read_csv(filename)
+def p_value_of_correlation(columns): 
+    df_original = pd.read_csv(filename) 
     df = df_original[columns].dropna() 
     for i in columns:
         if i not in df.columns: 
@@ -144,4 +146,4 @@ def loop(max_iterations = 25, query: str = ""):
             break
 
 if __name__ == "__main__":
-    loop(query = "what should I feed a chicken in order to get a higher thigh PH?")
+    loop(query = "what should I feed a chicken in order to affect gene expression in the breast?")

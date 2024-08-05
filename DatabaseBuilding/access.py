@@ -63,9 +63,6 @@ getAllIndividual += 'results.average_feed_intake, results.bodyweightgain, result
 getAllIndividual += 'FROM individuals JOIN results on individuals.result_id = results.result_id '
 
 
-
-
-
 #loads the file in an array form
 def load_file(filename):
     with open(filename) as file:
