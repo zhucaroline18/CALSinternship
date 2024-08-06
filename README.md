@@ -24,7 +24,15 @@ Another challenge that presents itself later in the project has to deal with the
 Additionally, another challenge that presents itself is that Dr. Lei wants to stay away from traditional statistical methods. While we can try the tool use with the statistical methods, he ultimately wants it to be more focused on AI concepts. We need to think of more tools that the LLM can use for evaluation of the data.
 
 ## Guide to Folders
-[DatabaseBuilding](./DatabaseBuilding)
+### [DatabaseBuilding](./DatabaseBuilding)
+Relevant Files 
+- [access.py](./DatabaseBuilding/access.py): an initial attempt to create a sql access layer
+- nutrition.db: the sql database connected to access.py
+
+Note about Progress
+- This was an initial attempt to create a database access layer- it proved difficult as there were so many names and also there was too many changes to the architecture to be figured out so I think it's definitely better to be sure about the structure of the input and output files before attempting to create a standardized database access layer
+
+
 
 
 ## link to other resources
