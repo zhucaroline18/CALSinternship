@@ -69,7 +69,7 @@ Not really relevant
 - This was just an initial attempt to understand pytorch with neural networks and playing with very simplified data- not relevant to larger project
 
 ## link to other resources
-[Nutrient Profile Calculator](https://1drv.ms/x/s!AhTsi-CmQfC04U-HmMr5EqZ26ZC4?e=bDB5xT&nav=MTVfe0IyNUNBOUQ1LTM5MkUtNEE0Ny04NjFGLTE5NjA1QjhDMkEwQX0)- calculator to make inserting data into database easier
-[instructions to add Data](instructions.md)
+- [Nutrient Profile Calculator](https://1drv.ms/x/s!AhTsi-CmQfC04U-HmMr5EqZ26ZC4?e=bDB5xT&nav=MTVfe0IyNUNBOUQ1LTM5MkUtNEE0Ny04NjFGLTE5NjA1QjhDMkEwQX0)- calculator to make inserting data into database easier
+- [instructions to add Data](instructions.md)
 
 
