@@ -11,7 +11,7 @@
 
 ### Steps 
 
-For each study: 
+For each study to input the inputs: 
 1. look at the feed formulation sheet. There is sometimes a starter diet and a grower diet. Starter diet is fed to the chickens within weeks 1-3 while grower diet is fed within weeks 4-6. Then, there will be the names of each experimented diet, for example, AST 1%, AST 2% AST 4% etc.
 2. In the diet calculator, for each experiment, input the ingredients used in grams in the top row. Generally, it will sum to a total of 1000 grams.
 3. If you are missing ingredients, fill it in with information from the textbook, internet searches, or sometimes the diet formulations will also list the composition of each ingredient.
@@ -19,12 +19,13 @@ For each study:
 5. Then, look at the growth data. Sometimes this is in the feed formulation but there will often be a tab for it in the result sheet. Find the average daily feed intake for each individual, multiply by 21 (since it's over a period of 3 weeks so 21 days) and that will be your total feed intake for the time period 1-3 or 4-6 depending on whether you're doing starter or grower diet
 6. Look at the bottom of the excel spreadsheet for the calculator. For each of the individuals following that diet, input the total feed intake and the rest the excel sheet should calculate for you.
 7. then just copy and paste that value into the final data spreadsheet under the input tabs, making sure to align the proper columns.
-9. fill in the label information (the study, diet name, pen number, etc)
-10. Do this for all the diets in the study and for 1-3 weeks (starter) and 4-6 weeks (grower diet). then to calculate 1-6 weeks, sum up 1-3 weeks and 4-6 weeks.
-11. You should now have around 24 inputs for 1-3 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 4-6 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 1-6 weeks consisting of each pen's input from 1-3 weeks added with its input from 4-6 weeks.
+8. fill in the label information (the study, diet name, pen number, etc)
+9. Do this for all the diets in the study and for 1-3 weeks (starter) and 4-6 weeks (grower diet). then to calculate 1-6 weeks, sum up 1-3 weeks and 4-6 weeks.
+10. You should now have around 24 inputs for 1-3 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 4-6 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 1-6 weeks consisting of each pen's input from 1-3 weeks added with its input from 4-6 weeks.
     
-Now you should be done with inputting the inputs
-    
-12. Then go to the results sheet and look at all the different results for that individual and the time period. (measurements at week 3 correspond to 1-3 weeks, measurements at week 6 correspond to 4-6 weeks)
-13. input all the results you can (you can usually just copy and paste), making sure you are adding the results to the correct inputs and the right output columns. Sometimes, the order in which we receive the data is different so make sure the correct column is being used.
-17. It is fine if there are missing points, that is just the nature of the data. Just add as many outputs as you are given in the study, or ask the lab students for more.  
+Now you should be done with inputting the inputs.
+
+Inputting results:    
+1. Then go to the results sheet and look at all the different results for that individual and the time period. (measurements at week 3 correspond to 1-3 weeks, measurements at week 6 correspond to 4-6 weeks)
+2. input all the results you can (you can usually just copy and paste), making sure you are adding the results to the correct inputs and the right output columns. Sometimes, the order in which we receive the data is different so make sure the correct column is being used.
+3. It is fine if there are missing points, that is just the nature of the data. Just add as many outputs as you are given in the study, or ask the lab students for more.  
