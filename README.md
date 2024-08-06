@@ -28,12 +28,45 @@ Additionally, another challenge that presents itself is that Dr. Lei wants to st
 Relevant Files 
 - [access.py](./DatabaseBuilding/access.py): an initial attempt to create a sql access layer
 - nutrition.db: the sql database connected to access.py
+- [populateTypes.sql](./DatabaseBuilding/populateTypes.sql): populates the types of the data- not really necessary for current system though
+- [createTables.sql](./DatabaseBuilding/createTables.sql): creates the tables for the nutrition database- you can look to understand the architecture
 
 Note about Progress
 - This was an initial attempt to create a database access layer- it proved difficult as there were so many names and also there was too many changes to the architecture to be figured out so I think it's definitely better to be sure about the structure of the input and output files before attempting to create a standardized database access layer
 - You will notice in access.py that data is being inserted into the database in 3 steps: First, we insert the diets and their nutrient composition into the diets table. Then, we insert the followers of the diets and the health results of that individual, connecting each follower to the diet that it is eating and noting how much of that diet it eats and inserting that into the DietFollowes table. When extracting information about the diet follower, it will calculate the total nutrients consumed within the time period. It inserts the results associated with that DietFollower into a separate Results table that is linked to the diet follower or individual. Then, there are the individuals which don't follow a diet in the table and will list out all the nutrients consumed and the results. The nutrients consumed will be added to the individuals table while the results will be added to the results table with a foreign key connecting them.
 - Again, the architecture is constantly changing so this is not the way I have structured the data anymore. Now, I organize the data like so: [here](https://1drv.ms/x/s!AhTsi-CmQfC04B1ZdRpoXWDRYoeZ?e=6JYybi) where you just have the nutrients consumed on one side and the health results on the other
 
+### [convertingData](./convertingData)
+Not really relevant
+- this was an initial attempt to simplify adding data to the database by getting ingredient information from the USDA website. This didn't really work out because the USDA doesn't have all the ingredients used and also has all sorts of ingredients its hard to know which ingredient is the one that we're actually using (for example, it has many results for corn and determining which corn it is we're using will be more of a hassle than just looking at the calculated values from the lab members)
+
+### [firstAttempt](./firstAttempt)
+Not really relevant 
+- This was just an initial attempt to understand neural networks and playing with very simplified data- not relevant to larger project
+
+### [largeNeuralNetwork](./largeNeuralNetwork)
+Relevant Files 
+- [OfficialTotalData.csv](./largeNeuralNetwork/OfficialTotalData.csv): The dataset that we are working with (incomplete but what we currently have)
+- [custonDataset.py](./largeNeuralNetwork/customDataset.py): creating a custom pytorch dataset from the data we have in OfficialTotalData.csv
+- [mymodel.py](./largeNeuralNetwork/mymodel.py): initializing the neural network
+- [train.py](./largeNeuralNetwork/train.py): the training and testing code
+
+Note about Progress 
+- This is a placeholder until we can actually get usable data- the current data is just not good so it's not really helpful to play with architecture/ loss functions/ activation functions/ learning rates etc yet. All those can be properly tested once we have a usable database with sufficient data
+
+### [llmAttempt](./llmAttempt)
+Relevant Files
+- [llm_attempt_2.py](./llmAttempt/llm_attempt_2.py): a reference example LLM with a very simple goal and prompt built as an exercise for understanding agents
+- [nutrition_first_attempt.py](./llmAttempt/nutrition_first_attempt.py): a base framework for an LLMAgent with tools using groq and llama 3
+- [tools.py]: a place to test some of the tools we can add to llm to train. The actual tools are within nutrition_first_attempt.py
+- [totalDataLLM2.csv](./llmAttempt/totalDataLLM2.py): the data that we are allowing the LLM to query into- what we have so far but it's not a lot
+
+Note about Progress 
+- this area shows some progress but is limited by the free version of llama3. (content length exceeded and rate limit exceeded error) Additionally, more prompt work will need to be done. We can also experiment with using different frameworks later on in the project but currently, put on hold until we can complete our neural network
+
+### [pytorchAttempt](./pytorchAttempt)
+Not really relevant 
+- This was just an initial attempt to understand pytorch with neural networks and playing with very simplified data- not relevant to larger project
 
 ## link to other resources
 [Nutrient Profile Calculator](https://1drv.ms/x/s!AhTsi-CmQfC04U-HmMr5EqZ26ZC4?e=bDB5xT&nav=MTVfe0IyNUNBOUQ1LTM5MkUtNEE0Ny04NjFGLTE5NjA1QjhDMkEwQX0)
