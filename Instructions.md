@@ -1,6 +1,6 @@
 # Instructions to add Data
 
-Resources 
+### Resources 
 - [data spreadsheet](https://1drv.ms/x/s!AhTsi-CmQfC04VFGd7PxzzuIcFev?e=LiwwHb&nav=MTVfezE0M0JEQTJBLTY1NzgtNEZBNC05MTRFLTdDNjVDRkExMEJBQX0) - data example
 - [Nutrient Profile Calculator](https://1drv.ms/x/s!AhTsi-CmQfC04U-HmMr5EqZ26ZC4?e=bDB5xT&nav=MTVfe0IyNUNBOUQ1LTM5MkUtNEE0Ny04NjFGLTE5NjA1QjhDMkEwQX0)- calculator to make inserting data into database easier
 
