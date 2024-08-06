@@ -6,11 +6,13 @@ Lots of data in the nutrition labs have gone unused- deemed insignificant by sta
 
 We will aim to create a machine learning model that can predict health results based on the nutritional profile of a diet (such as the various carbohydrates, proteins and amino acids, lipids and fatty acids, vitamins, and minerals).
 
+Initial Project Proposal: [here](https://1drv.ms/b/s!AhTsi-CmQfC04VP_3Q_406QN2pUm?e=84DVdJ)
+
 ## Project Methods
 This project can be taken in 3 main stages 
 - building up the database
 - building up the neural network
-- incorporating the neural network into a Large Language Model
+- incorporating the neural network into a Large Language Model using an agent with tool use
 
 # Project Challenges and Considerations 
 A lot of the challenges come in the actual data collection- everyone in the lab organizes their data in a different way making it difficult and time consuming to add the data into the database. A lot of calculation is necessary to calculate the nutrient composition of each diet. In addition, we are currently finding the total nutrient consumed in a lifetime since birth of a chicken (this is find for chickens as we can keep track of the nutrients from birth to 6 weeks, however is probably not viable for many other animals including humans. We may want to consider something like total nutrients consumed in a day) which requires finding average diet intake, calculating the nutrient composition of that diet, and then multiplying by the total intake across 1-3 weeks or 1-6 weeks based on what result we are looking at. Additionally, because broiler chickens are fed different diets from 1-3 weeks compared to 3-6 weeks, it makes it a hassle to calculate the diets from 1-6 weeks. For example, if we are looking at a result measured at week 3, then we would look at the 1-3 week total intake. However, if we are measuing a result at week 6, we consider that an ouput from 1-6 weeks of nutrient intake. So, as you can see, inputting data into the database is an extremely time consumming endeavor. This can be made easier in the future by implementing a standardized system for data collection across the lab so that the work can be distributed across the grad students.
