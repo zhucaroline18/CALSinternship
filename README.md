@@ -24,7 +24,7 @@ Another challenge that presents itself later in the project has to deal with the
 Additionally, another challenge that presents itself is that Dr. Lei wants to stay away from traditional statistical methods. While we can try the tool use with the statistical methods, he ultimately wants it to be more focused on AI concepts. We need to think of more tools that the LLM can use for evaluation of the data.
 
 ## Guide to Folders
-[DatabaseBuilding](./Databasebuilding)
+[DatabaseBuilding](./DatabaseBuilding)
 
 
 ## link to other resources
