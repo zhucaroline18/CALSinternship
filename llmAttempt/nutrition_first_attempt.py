@@ -1,5 +1,5 @@
 import os 
-os.environ['GROQ_API_KEY'] = "?"
+os.environ['GROQ_API_KEY'] = ""
 from groq import Groq
 import re
 import pandas as pd
@@ -41,33 +41,35 @@ Use Thought to describe your thoughts about the question you have been asked.
 Use Action to run one of the actions available to you - then return PAUSE.
 Observation will be the result of running those actions.
 
-You will be asked questions about nutrient intake and how it affects chicken health
+You will be asked questions about nutrient intake and how it affects chicken health. Don't make assumptions about which variables are important. You should test all of them. 
 
 Your available actions are:
 
 pearson_correlation:
 e.g. pearson_correlation(['Vitamin A IU/kg', 'thigh PH', 'beta-carotene'])
 takes in a list of column names regarding the columns of interest. This can refer to a nutrient intake inputs for chickens or the chicken health parameter outputs. The columns of interest should only include numerical values. 
-The function returns the correlation matrix between the columns of interest. The correlation matrix refers to the Pearson correlation matrix where r = 1 represents a perfect positive linear relationship, r = -1 represents a perfect negative linear relationship and r = 0 represents no linear relationships. 
+The function returns the correlation matrix in the form of a NumPy matrix between the columns of interest. The correlation matrix refers to the Pearson correlation matrix where r = 1 represents a perfect positive linear relationship, r = -1 represents a perfect negative linear relationship and r = 0 represents no linear relationships. 
 
 p_value_of_correlation:
 e.g. p_value_of_correlation(['Vitamin A IU/kg', 'thigh PH', 'beta-carotene'])
 takes in a list of column names regarding the columns of interest. This can refer to a nutrient intake inputs for chickens or the chicken health parameter outputs. The columns of interest should only include numerical values. 
-The value it returns is the p value matrix. It tells you the p-value of each relationship and whether or not that correlation is significant.
+The value it returns is the p value matrix in the form of a NumPy matrix. It tells you the p-value of each relationship and whether or not that correlation is significant.
 
 get_inputs:
 e.g. get_inputs()
-returns a list of the available input columns to examine. The first 5 columns contain string data and the rest contain numerical data
+returns a list of the available input columns to examine. The first 5 columns contain string data and the rest contain numerical data. All the inputs are considered nutrients
 
 get_outputs:
 e.g. get_outputs()
 returns a list of the available output columns to examine.
 
+get_all_data():
+e.g. get_all_data()
+Returns all the inputs and outputs in the form of a NumPy matrix. All the available data will be returned. In each row of the matrix returned, the first 92 values will be input and the rest will be output
+
 In each session, you will be called until you have an answer, in which case, output it as the Answer.
 Now begin.
 """.strip()
-
-#def get_all_data()
 
 def pearson_correlation(columns):
     df_original = pd.read_csv(filename)
@@ -98,15 +100,18 @@ def p_value_of_correlation(columns):
     
     return corr_pvalues(df).to_numpy()
 
+def get_all_data():
+    df = pd.read_csv(filename)
+    return df.to_numpy()
+
 def get_inputs():
     df = pd.read_csv(filename)
-    return df.columns[:93].tolist()
+    return df.columns[:92].tolist()
 
 def get_outputs():
     df = pd.read_csv(filename)
-    return df.columns[93:].tolist()
+    return df.columns[92:].tolist()
 
-#add the observation to memory
 def loop(max_iterations = 25, query: str = ""):
     agent = Agent(client=client, system=system_prompt)
 

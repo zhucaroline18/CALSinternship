@@ -24,6 +24,10 @@ def getColumns(filename):
     df = pd.read_csv(filename)
     return df.columns
 
+def get_all_data(filename):
+    df = pd.read_csv(filename)
+    return df.to_numpy()
+
 def pearson_correlation2(columns, filename):
     df_original = pd.read_csv(filename)
     df = df_original[columns].dropna()   #not sure if i should drop na or not?
@@ -45,6 +49,6 @@ def pearson_correlation2(columns, filename):
 
 if __name__ == "__main__":
     columns = ['Vitamin A IU/kg','thigh PH', 'beta-carotene']
-    print(pearson_correlation(columns, 'totalDataLLM.csv'))
     #print(getColumns('totalDataLLM.csv'))
-    pearson_correlation2(columns, 'totalDataLLM.csv')
+    print(get_all_data('totalDataLLM2.csv'))
+    #pearson_correlation2(columns, 'totalDataLLM2.csv')

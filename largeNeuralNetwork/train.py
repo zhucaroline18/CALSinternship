@@ -8,8 +8,8 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import torchvision
 
-train_dataset = customDataset.NutritionDataset(csv_file = "journalclubgenetraining.csv")
-test_dataset = customDataset.NutritionDataset(csv_file = "journalclubgenetesting.csv")
+train_dataset = customDataset.NutritionDataset(csv_file = "OfficialTotalData.csv")
+test_dataset = customDataset.NutritionDataset(csv_file = "OfficialTotalData.csv")
 
 global_loss = nn.MSELoss() #next try cross entropy
 testing_loss = nn.L1Loss()

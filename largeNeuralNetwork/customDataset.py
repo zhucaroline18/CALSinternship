@@ -5,10 +5,12 @@ from torchvision import transforms, utils
 import numpy as np
 from csv import reader
 
+#still not sure how to deal with null values 
 
 maximum = 170
-num_input = 96
-num_output = 60
+num_input = 87
+num_output = 36
+labels = 5
 
 def load_file(filename, max_rows):
     with open(filename) as file:
@@ -19,11 +21,12 @@ def load_file(filename, max_rows):
             if row is None:
                 continue
             row2 = []
-            for item in row:
-                if item != '':
-                    row2.append(item)
-                else:
-                    row2.append('0')
+            for i, item in enumerate(row):
+                if i >= labels:
+                    if item != '':
+                        row2.append(item)
+                    else:
+                        row2.append('0')
             ret.append(row2)
             count+=1
             if (max_rows > 0 and count >= max_rows):
@@ -50,32 +53,3 @@ class NutritionDataset(Dataset):
             sample = self.transform(sample)
 
         return sample
-
-
-
-"""
-class Solution:
-    def maxPoints(self, points: List[List[int]]) -> int:
-        mapping = {}
-        for point in points:
-            mapping[point] = {}
-        for i in range(len(points)):
-            for j in range(i, len(points)):
-                mapping[points[i]][points[j]] = (points[i][1]-points[j][i])/(points[i][0]-points[j][0])
-                mapping[points[j]][points[i]]
-        
-        counting = {}
-        for i in range(len(points)):
-            for item in mapping[points[i]].values():
-                if item in counting:
-                    counting[item] += 1
-                else:
-                    counting[item] = 1
-        
-        maximum = 0
-        for i in counting.values():
-            if i > maximum:
-                maximum = i
-        
-        return int(math.sqrt(maximum))
-"""
