@@ -31,8 +31,9 @@ Relevant Files
 
 Note about Progress
 - This was an initial attempt to create a database access layer- it proved difficult as there were so many names and also there was too many changes to the architecture to be figured out so I think it's definitely better to be sure about the structure of the input and output files before attempting to create a standardized database access layer
-
-
+- You will notice in access.py that data is being inserted into the database in 3 steps: First, we insert the diets and their nutrient composition into the diets table. Then, we insert the followers of the diets and the health results of that individual, connecting each follower to the diet that it is eating and noting how much of that diet it eats and inserting that into the DietFollowes table. When extracting information about the diet follower, it will calculate the total nutrients consumed within the time period. It inserts the results associated with that DietFollower into a separate Results table that is linked to the diet follower or individual. Then, there are the individuals which don't follow a diet in the table and will list out all the nutrients consumed and the results. The nutrients consumed will be added to the individuals table while the results will be added to the results table with a foreign key connecting them.
+- Again, the architecture is constantly changing so this is not the way I have structured the data anymore. Now, I organize the data like so: [here](https://1drv.ms/x/s!AhTsi-CmQfC04B1ZdRpoXWDRYoeZ?e=6JYybi) where you just have the nutrients consumed on one side and the health results on the other
 
 
 ## link to other resources
+[Nutrient Profile Calculator](https://1drv.ms/x/s!AhTsi-CmQfC04U-HmMr5EqZ26ZC4?e=bDB5xT&nav=MTVfe0IyNUNBOUQ1LTM5MkUtNEE0Ny04NjFGLTE5NjA1QjhDMkEwQX0)
