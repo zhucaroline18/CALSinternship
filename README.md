@@ -47,7 +47,7 @@ Not really relevant
 ### [largeNeuralNetwork](./largeNeuralNetwork)
 Relevant Files 
 - [OfficialTotalData.csv](./largeNeuralNetwork/OfficialTotalData.csv): The dataset that we are working with (incomplete but what we currently have)
-- [custonDataset.py](./largeNeuralNetwork/customDataset.py): creating a custom pytorch dataset from the data we have in OfficialTotalData.csv
+- [customDataset.py](./largeNeuralNetwork/customDataset.py): creating a custom pytorch dataset from the data we have in OfficialTotalData.csv
 - [mymodel.py](./largeNeuralNetwork/mymodel.py): initializing the neural network
 - [train.py](./largeNeuralNetwork/train.py): the training and testing code
 
