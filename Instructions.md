@@ -22,7 +22,9 @@ For each study:
 9. fill in the label information (the study, diet name, pen number, etc)
 10. Do this for all the diets in the study and for 1-3 weeks (starter) and 4-6 weeks (grower diet). then to calculate 1-6 weeks, sum up 1-3 weeks and 4-6 weeks.
 11. You should now have around 24 inputs for 1-3 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 4-6 weeks consisting of around 4 different diets depending on the experiment with 6 individuals each. You should also have around 24 inputs for 1-6 weeks consisting of each pen's input from 1-3 weeks added with its input from 4-6 weeks.
-12. Now you should be done with inputting the inputs
-13. Then go to the results sheet and look at all the different results for that individual and the time period. (measurements at week 3 correspond to 1-3 weeks, measurements at week 6 correspond to 4-6 weeks)
-14. input all the results you can (you can usually just copy and paste), making sure you are adding the results to the correct inputs and the right output columns. Sometimes, the order in which we receive the data is different so make sure the correct column is being used.
-15. It is fine if there are missing points, that is just the nature of the data. Just add as many outputs as you are given in the study, or ask the lab students for more.  
+    
+Now you should be done with inputting the inputs
+    
+12. Then go to the results sheet and look at all the different results for that individual and the time period. (measurements at week 3 correspond to 1-3 weeks, measurements at week 6 correspond to 4-6 weeks)
+13. input all the results you can (you can usually just copy and paste), making sure you are adding the results to the correct inputs and the right output columns. Sometimes, the order in which we receive the data is different so make sure the correct column is being used.
+17. It is fine if there are missing points, that is just the nature of the data. Just add as many outputs as you are given in the study, or ask the lab students for more.  
