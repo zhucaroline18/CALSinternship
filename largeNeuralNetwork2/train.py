@@ -7,9 +7,12 @@ import customDataset
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import torchvision
+import pandas as pd
 
-train_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork/OfficialTotalData.csv")
-test_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork/OfficialTotalData.csv")
+
+train_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
+test_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
+
 
 global_loss = nn.MSELoss() #next try cross entropy
 testing_loss = nn.L1Loss()
@@ -18,8 +21,8 @@ fineTuneLearningRate = 0.0001
 globalBatchSize = 1 #8 or 16 or 32
 wholeTrain = 100
 
-global_path = "journal_club_1.pth"
-checkpoint_path = "journal_club_checkpoint_1.pth"
+global_path = "journal_club.pth"
+checkpoint_path = "journal_club_checkpoint.pth"
 
 def train_model():
     model = mymodel.MyModel()
@@ -134,3 +137,6 @@ if __name__ == "__main__":
     for x in range(100):
         loss += test_model_all()
     print(f"average loss: {loss/100}")
+
+    df = pd.DataFrame(train_dataset['data'])
+    df.corr(method=histogram_intersection)

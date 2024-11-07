@@ -1,21 +1,22 @@
 import os 
 os.environ['GROQ_API_KEY'] = ""
-from groq import Groq
+#from groq import Groq
+import ollama
 import re
 
-client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
+
+
 
 filename = 'totalDataLLM.csv'
 
 class Agent:
-    def __init__(self, client: Groq, system: str = "") -> None:
+    def __init__(self, client = "llama3.1", system:str = "") -> None:
         self.client = client
         self.system = system
-        self.messages: list = []
+        self.messages:list = []
         if self.system:
             self.messages.append({"role": "system", "content": system})
+
 
     def __call__(self, message = ""):
         if message: 
@@ -25,10 +26,10 @@ class Agent:
         return result
 
     def execute(self):
-        completion = client.chat.completions.create(
-            model="llama3-70b-8192", messages=self.messages
+        completion = ollama.chat(
+            self.client, messages=self.messages
         )
-        return completion.choices[0].message.content
+        return completion['message']['content']
 
 system_prompt = """
 Answer the following questions and obey the following commands as best you can. 
@@ -45,7 +46,7 @@ get_columns:
 e.g. get_columns()
 returns a list of the available columns to examine the correlations between. The first 5 columns contain string data and the rest contain numerical data
 
-You will receive a message from the human, then you hsould start a loop and do one of two things:
+You will receive a message from the human, then you should start a loop and do one of three things:
 
 Option 1: You use a tool to answer the question. 
 For this, you should use the following format:
@@ -59,6 +60,11 @@ Option 2: You respond to the human.
 For this, you should use the following format:
 Action: Response To Human
 Action Input: "your response to the human, summarizing what you did and what you learned"
+
+Option 3: You give the human a final answer.
+For this, you should use the following format:
+Action: Final Answer
+Action Input: "your answer to the human's original question, summarizing your response to their query"
 
 Begin! 
 """.strip()
@@ -77,7 +83,7 @@ def get_columns():
 
 
 def loop(max_iterations = 20, query: str = ""):
-    agent = Agent(client=client, system=system_prompt)
+    agent = Agent("llama3.1", system=system_prompt)
 
     tools = ["pearson_correlation", "get_columns"]
 
@@ -112,8 +118,12 @@ def loop(max_iterations = 20, query: str = ""):
             print(next_prompt)
             continue
 
-        if "Answer" in result:
+        if "Final Answer" in result:
             break
+    #print(agent.messages)
 
 if __name__ == "__main__":
-    loop(query = "is there a significant relationship between Vitamin A fed to a chicken and the chicken's thigh PH?")
+    #loop(query = "is there a significant relationship between Vitamin A fed to a chicken and the chicken's thigh PH?")
+    print("Enter prompt:")
+    prompt = input()
+    loop(query = prompt)
