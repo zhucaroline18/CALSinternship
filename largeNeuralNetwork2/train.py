@@ -8,11 +8,19 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import torchvision
 import pandas as pd
+from featurewiz import FeatureWiz
 
 
 train_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
 test_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
 
+fwiz = FeatureWiz(feature_engg = '', nrows=None, transform_target=True, scalers="std",
+        		category_encoders="auto", add_missing=False, verbose=0, imbalanced=False, 
+                ae_options={})
+X_train_selected, y_train = fwiz.fit_transform(train_dataset["data"], train_dataset["label"])
+X_test_selected = fwiz.transform(test_datase["data"])
+### get list of selected features ###
+print(fwiz.features)
 
 global_loss = nn.MSELoss() #next try cross entropy
 testing_loss = nn.L1Loss()
