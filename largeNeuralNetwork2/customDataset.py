@@ -8,7 +8,7 @@ from csv import reader
 #still not sure how to deal with null values 
 
 maximum = 170
-num_input = 87
+num_input = 87 #is this really the right number?
 num_output = 36
 labels = 5
 
@@ -46,6 +46,27 @@ class NutritionDataset(Dataset):
             idx = idx.tolist()
         input_vals = self.data[idx][0:num_input]
         output_vals = self.data[idx][num_input:]
+        
+        sample = {"data": torch.from_numpy(np.float_(input_vals)).to(torch.float32), "label":torch.from_numpy(np.float_(output_vals)).to(torch.float32)}
+
+        if self.transform:
+            sample = self.transform(sample)
+
+        return sample
+
+class SingleLabelDataset(Dataset):
+    def __init__(self, csv_file, transform = None):
+        self.data = load_file(csv_file, maximum)
+        self.transform = transform 
+
+    def __len__(self):
+        return len(self.data)
+    
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        input_vals = self.data[idx][0:num_input]
+        output_vals = self.data[idx][96:97]
         
         sample = {"data": torch.from_numpy(np.float_(input_vals)).to(torch.float32), "label":torch.from_numpy(np.float_(output_vals)).to(torch.float32)}
 

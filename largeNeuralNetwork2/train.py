@@ -8,19 +8,29 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import torchvision
 import pandas as pd
-from featurewiz import FeatureWiz
+# from featurewiz import FeatureWiz
 
 
-train_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
-test_dataset = customDataset.NutritionDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
+train_dataset = customDataset.SingleLabelDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
+test_dataset = customDataset.SingleLabelDataset(csv_file = "largeNeuralNetwork2/OfficialTotalData.csv")
 
-fwiz = FeatureWiz(feature_engg = '', nrows=None, transform_target=True, scalers="std",
-        		category_encoders="auto", add_missing=False, verbose=0, imbalanced=False, 
-                ae_options={})
-X_train_selected, y_train = fwiz.fit_transform(train_dataset["data"], train_dataset["label"])
-X_test_selected = fwiz.transform(test_datase["data"])
+
+# i = 0
+# data = []
+# labels = []
+# for d, l in train_dataset:
+#     data.append(d)
+#     labels.append(l)
+#     i += 1
+#     print(i)
+
+# fwiz = FeatureWiz(feature_engg = '', nrows=None, transform_target=True, scalers="std",
+#         		category_encoders="auto", add_missing=False, verbose=0, imbalanced=False, 
+#                 ae_options={})
+# X_train_selected, y_train = fwiz.fit_transform(data, labels)
+# X_test_selected = fwiz.transform(data)
 ### get list of selected features ###
-print(fwiz.features)
+# print(fwiz.features)
 
 global_loss = nn.MSELoss() #next try cross entropy
 testing_loss = nn.L1Loss()
@@ -42,10 +52,14 @@ def train_model():
         for i, (obj) in enumerate(train_loader):
             data = (obj['data'][0])
             label = (obj['label'])
+            if label == 0:
+                continue
+            #print(label)
+    
 
             data.to(torch.float32)
             label.to(torch.float32)
-            print(data)
+            #print(data)
             
             y = model(data)
             loss = loss_fn(y, label)
@@ -111,6 +125,9 @@ def test_model_all():
         data = obj['data'][0]
         label = obj['label'][0]
 
+        if label == 0:
+            continue
+
         data.to(torch.float32)
         label.to(torch.float32)
 
@@ -120,7 +137,7 @@ def test_model_all():
         totalLoss += loss2
         
         print(f"loss: {loss2}")
-        print(f"input: {data.detach().cpu().numpy()}")
+        #print(f"input: {data.detach().cpu().numpy()}")
         print(f"result: {y.detach().cpu().numpy()}")
         print(f"label: {label.detach().cpu().numpy().reshape(-1)}")
         print()
@@ -138,13 +155,9 @@ def test_model_all():
 
 if __name__ == "__main__":
     train_model()
-    #load_checkpoint_train_model()
-    #load_checkpoint_train_model()
-    #print(train_dataset)
+    load_checkpoint_train_model()
     loss = 0
     for x in range(100):
         loss += test_model_all()
     print(f"average loss: {loss/100}")
-
-    df = pd.DataFrame(train_dataset['data'])
-    df.corr(method=histogram_intersection)
+    
