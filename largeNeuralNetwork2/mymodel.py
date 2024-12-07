@@ -23,11 +23,17 @@ class MyModel(nn.Module):
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(numInputs, layer1Nodes), #add a dropout?
             nn.LeakyReLU(),
-            nn.Dropout(p=0.2),
+            #nn.Dropout(p=0.2),
             nn.Linear(layer1Nodes, layer2Nodes),
             nn.LeakyReLU(),
-            nn.Dropout(p=0.2),
+            #nn.Dropout(p=0.2),
             nn.Linear(layer2Nodes, numOutputs)
+            #nn.LeakyReLU(),
+            #nn.Dropout(p=0.2),
+            #nn.Linear(layer3Nodes, layer4Nodes),
+            #nn.LeakyReLU(),
+            #nn.Dropout(p=0.2),
+            #nn.Linear(layer4Nodes, numOutputs)
         )
 
     def forward(self, x):
