@@ -42,7 +42,9 @@ wholeTrain = 100
 global_path = "journal_club.pth"
 checkpoint_path = "journal_club_checkpoint.pth"
 
-def train_model():
+def train_model(path):
+    global_path = path + ".pth"
+    checkpoint_path = path + "_checkpoint.pth"
     model = mymodel.MyModel()
     optimizer = torch.optim.Adam(model.parameters(), lr = largeLearningRate)
     loss_fn = global_loss
@@ -79,7 +81,9 @@ def train_model():
     }
     torch.save(state, checkpoint_path)
 
-def load_checkpoint_train_model():
+def load_checkpoint_train_model(path):
+    global_path = path + ".pth"
+    checkpoint_path = path + "_checkpoint.pth"
     checkpoint = torch.load(checkpoint_path)
     model = mymodel.MyModel()
     optimizer = torch.optim.Adam(model.parameters(), lr = fineTuneLearningRate)
@@ -114,7 +118,8 @@ def load_checkpoint_train_model():
     }
     torch.save(state, checkpoint_path)
 
-def test_model_all():
+def test_model_all(path):
+    global_path = path + ".pth"
     model = torch.load(global_path)
 
     total = 0
