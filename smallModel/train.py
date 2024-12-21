@@ -191,7 +191,7 @@ def test_model_all(dataset:customDataset, path):
     AIC = 2 * k - 2 * math.log(likelihood) 
     BIC = k * math.log (n) - 2 * math.log(likelihood)
     R2 = 1 - res2_agr/sqr_agr
-    RMSE = math.sqrt(SE_agr)
+    RMSE = math.sqrt(SE_agr)/total
 
     return MAPE, AIC, BIC, R2, RMSE
 

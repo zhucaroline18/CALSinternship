@@ -9,7 +9,7 @@ import math
 
 dataset = pd.read_csv('smallModel/Calculated_Value_Dataset_Updated.csv')
 
-target_features_comp = ['ME, kcal per kg','Overall','NDF,g',
+target_features_comp = ['ME, kcal per kg','NDF,g',
                         'ADF,g','NFC,g','Crude fiber,g','Starch,g','CP,g',
                         'Arginine,g','Histidine,g','Isoleucine,g','Leucine,g',
                         'Lysine,g','Methionine,g','Phenylalanine,g',
@@ -34,17 +34,28 @@ target_features_comp = ['ME, kcal per kg','Overall','NDF,g',
                         'Ca:P ratio','Na,mg','Cl,mg','K,mg','Mg,mg','S,mg',
                         'Cu ppm','I ppm','Fe,mg','Mn,mg','Se,mg','Zn,mg']
 
+fatty_acids = ['SFA,g',
+                        'MUFA,g','PUFA,g','n-3 PUFA,g','n-6 PUFA,g',
+                        'n-3:n-6 ratio,g','C14,g','C15:0,g','C15:1,g',
+                        'C16:0,g','C16:1,g','C17:0,g','C17:1,g','C18:0,g',
+                        'C18:1,g','C18:2 cis n-6 LA,g','C18:3 cis n-3 ALA,g',
+                        'C20:0,g','C20:1,g','C20:4n-6 ARA,g','C20:5n-3 EPA,g',
+                        'C22:0,g','C22:1,g','C22:5,g','C22:6n-3 DHA,g',
+                        'C24:0,g']
+
 target_labels_1 = ['average feed intake g per d','bodyweightgain,g']
 
 target_labels_2 = ['akp U per ml','alt (U per L)','glucose (g per L)',
                  'nefa,umol per L','pip mg per dL','tc mg per g','tg mg per g',
                  'trap U per L','uric acid mmol per L','BCA']
 
-target_labels_3 = ['Plasma SFA','Plasma MUFA','Plasma PUFA','Plasma n-3','Plasma n-6',
-                 'Plasma C16:0 ','Plasma C16:1 ','Plasma C18:0 ','Plasma C18:1 ',
-                 'Plasma C18:2 ','Plasma C18:3 ','Plasma C20:5','Plasma C22:6',
+#The following have too little data: Plasma C16:1, Plasma C18:1, Plasma C18:3, 
+#Plasma C20:5, Liver C18:1
+target_labels_3 = ['Plasma SFA','Plasma PUFA','Plasma n-3','Plasma n-6',
+                 'Plasma C16:0 ','Plasma C18:0 ',
+                 'Plasma C18:2 ','Plasma C22:6',
                  'Liver SFA','Liver MUFA','Liver PUFA','Liver n-3','Liver n-6',
-                 'Liver C16:00 ','Liver C16:1 ','Liver C18:0 ','Liver C18:1',
+                 'Liver C16:00 ','Liver C16:1 ','Liver C18:0 ',
                  'Liver C18:2','Liver C18:3 ','Liver C20:5','Liver C22:6',
                  'Breast SFA','Breast MUFA','Breast PUFA','Breast n-3',
                  'Breast n-6','Breast C16:0','Breast C16:01','Breast C18:0',
@@ -60,6 +71,8 @@ target_labels_4 = ['breast mTOR','breast S6K1','breast 4E-BP1','breast MURF1',
                    'IGF1','IGFR','IRS1','FOXO1','LC3-1','MyoD','MyoG','Pax3',
                    'Pax7','Mrf4','Mrf5','liver mTOR','liver S6K1',
                    'liver 4E-BP1','liver MURF1','liver MAFbx','liver AMPK']
+
+#target_features_comp = fatty_acids
 
 def train(features, target):
 
@@ -111,19 +124,32 @@ def train(features, target):
     test_r2 = r2_score(labels_test, pred_test)
     test_mape = mean_absolute_percentage_error(labels_test, pred_test)
     
+    metrics = f'''{target} evaluation:
+    Training RMSE: {train_rmse:.4f}, R2: {train_r2:.4f}, MAPE: {train_mape:.4f}
+    Testing RMSE: {test_rmse:.4f}, R2: {test_r2:.4f}, MAPE: {test_mape:.4f}'''
     
-    print(f'{target} evaluation:')
-    print(f'Training RMSE: {train_rmse:.4f}, R2: {train_r2:.4f}, MAPE: {train_mape:.4f}')
-    print(f'Testing RMSE: {test_rmse:.4f}, R2: {test_r2:.4f}, MAPE: {test_mape:.4f}')
+    print(metrics)
 
-    feature_importances = model.feature_importances_
-
-    importance_df = pd.DataFrame({
+    importance = pd.DataFrame({
         'Feature': data.columns,
-        'Importance': feature_importances
+        'Importance': model.feature_importances_
     }).sort_values(by='Importance', ascending=False)
+    importance['Rank'] = range(len(data.columns))
 
-    return importance_df
+    return metrics, importance
 
-for i in target_labels_1:
-     train(target_features_comp, i)
+def evaluate(targets):
+    for i in targets:
+        metrics, importance = train(target_features_comp, i)
+
+        filtered_importance = importance[importance['Feature'].isin(fatty_acids)]
+
+        with open(f'smallModel/outputs/{i}.txt', "w") as file:
+            file.write(metrics + '\n\n' + importance.head().to_string() 
+                       + '\n\n' + filtered_importance.to_string())
+
+evaluate(target_labels_1)
+evaluate(target_labels_2)
+evaluate(target_labels_3)
+evaluate(target_labels_4)
+
