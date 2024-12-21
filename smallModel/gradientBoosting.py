@@ -2,8 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_percentage_error
 import pandas as pd
+import math
 
 dataset = pd.read_csv('smallModel/Calculated_Value_Dataset_Updated.csv')
 
@@ -61,10 +63,14 @@ target_labels_4 = ['breast mTOR','breast S6K1','breast 4E-BP1','breast MURF1',
 
 def train(features, target):
 
-    temp = dataset.dropna()
+    scaler = MinMaxScaler()
+
+    temp = dataset.dropna(subset=target)
     data = temp[features]
-    data = data.fillna(data.mean())
     labels = temp[target]
+    data = pd.DataFrame(scaler.fit_transform(data), columns=data.columns)
+    data = data.fillna(data.mean())
+
 
 
     # Split the data into training and testing sets
@@ -77,7 +83,6 @@ def train(features, target):
         learning_rate=0.1,       # Learning rate (shrinkage)
         max_depth=3,             # Maximum depth of each tree
         subsample=0.8,           # Fraction of samples used for fitting each tree
-        random_state=42          # For reproducibility
     )
 
     # Train the model
@@ -87,14 +92,29 @@ def train(features, target):
     pred_train = model.predict(data_train)
     pred_test = model.predict(data_test)
 
-    # Evaluate the model
-    train_mse = mean_squared_error(labels_train, pred_train)
-    test_mse = mean_squared_error(labels_test, pred_test)
-    train_r2 = r2_score(labels_train, pred_train)
-    test_r2 = r2_score(labels_test, pred_test)
+    residuals = labels_train - pred_train
 
-    print(f'Training MSE: {train_mse:.4f}, R2: {train_r2:.4f}')
-    print(f'Testing MSE: {test_mse:.4f}, R2: {test_r2:.4f}')
+    n = len(labels_train)
+    sigma_squared = np.var(residuals)
+    log_likelihood = -0.5 * n * np.log(2 * np.pi * sigma_squared) - np.sum(residuals**2) / (2 * sigma_squared)
+
+
+    # Evaluate the model
+    k = len(features)
+    train_rmse = math.sqrt(mean_squared_error(labels_train, pred_train))
+    train_r2 = r2_score(labels_train, pred_train)
+    train_mape = mean_absolute_percentage_error(labels_train, pred_train)
+    train_aic = 2 * k - 2 * (-n * log_likelihood)
+    train_bic = k * math.log(n) - 2 * (-n * log_likelihood)
+
+    test_rmse = math.sqrt(mean_squared_error(labels_test, pred_test))
+    test_r2 = r2_score(labels_test, pred_test)
+    test_mape = mean_absolute_percentage_error(labels_test, pred_test)
+    
+    
+    print(f'{target} evaluation:')
+    print(f'Training RMSE: {train_rmse:.4f}, R2: {train_r2:.4f}, MAPE: {train_mape:.4f}')
+    print(f'Testing RMSE: {test_rmse:.4f}, R2: {test_r2:.4f}, MAPE: {test_mape:.4f}')
 
     feature_importances = model.feature_importances_
 
@@ -103,8 +123,7 @@ def train(features, target):
         'Importance': feature_importances
     }).sort_values(by='Importance', ascending=False)
 
-    print(importance_df)
+    return importance_df
 
 for i in target_labels_1:
-    print(i)
-    train(target_features_comp, i)
+     train(target_features_comp, i)
