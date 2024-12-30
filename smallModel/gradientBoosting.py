@@ -83,6 +83,8 @@ def train(features, target):
     labels = temp[target]
     data = pd.DataFrame(scaler.fit_transform(data), columns=data.columns)
     data = data.fillna(data.mean())
+    #data = data.fillna(0) #Necessary incase an entire column is NaN, but shouldn't affect anything
+
 
 
 
@@ -124,32 +126,61 @@ def train(features, target):
     test_r2 = r2_score(labels_test, pred_test)
     test_mape = mean_absolute_percentage_error(labels_test, pred_test)
     
-    metrics = f'''{target} evaluation:
+    print(f'''{target} evaluation:
     Training RMSE: {train_rmse:.4f}, R2: {train_r2:.4f}, MAPE: {train_mape:.4f}
-    Testing RMSE: {test_rmse:.4f}, R2: {test_r2:.4f}, MAPE: {test_mape:.4f}'''
+    Testing RMSE: {test_rmse:.4f}, R2: {test_r2:.4f}, MAPE: {test_mape:.4f}''')
     
-    print(metrics)
+    metrics = pd.DataFrame({
+        'Metric':['Training RMSE','Training R2','Training MAPE','Testing RMSE','Testing R2','Testing MAPE'],
+        'Value':[train_rmse, train_r2, train_mape, test_rmse, test_r2, test_mape]
+    })
 
     importance = pd.DataFrame({
         'Feature': data.columns,
         'Importance': model.feature_importances_
-    }).sort_values(by='Importance', ascending=False)
-    importance['Rank'] = range(len(data.columns))
+    })
 
     return metrics, importance
 
 def evaluate(targets):
     for i in targets:
         metrics, importance = train(target_features_comp, i)
-
+        
+        importance.sort_values(by='Importance', ascending=False)
+        importance['Rank'] = range(len(importance['Feature']))
         filtered_importance = importance[importance['Feature'].isin(fatty_acids)]
 
+        metric_string = f'''{i} evaluation:
+        Training RMSE: {metrics[0]:.4f}, R2: {metrics[1]:.4f}, MAPE: {metrics[2]:.4f}
+        Testing RMSE: {metrics[3]:.4f}, R2: {metrics[4]:.4f}, MAPE: {metrics[5]:.4f}'''
+
         with open(f'smallModel/outputs/{i}.txt', "w") as file:
-            file.write(metrics + '\n\n' + importance.head().to_string() 
+            file.write(metric_string + '\n\n' + importance.head().to_string() 
                        + '\n\n' + filtered_importance.to_string())
+            
+def fill_csv(name):
 
-evaluate(target_labels_1)
-evaluate(target_labels_2)
-evaluate(target_labels_3)
-evaluate(target_labels_4)
+    importance_frame = pd.DataFrame({'Variable':target_features_comp})
+    metric_frame = pd.DataFrame({'Metric':['Training RMSE','Training R2',
+                                           'Training MAPE','Testing RMSE',
+                                           'Testing R2','Testing MAPE']})
 
+    targets = target_labels_1 + target_labels_2 + target_labels_3 + target_labels_4
+
+    for label in targets:
+        metrics, importance = train(target_features_comp, label)
+        importance_frame[label] = importance['Importance']
+        metric_frame[label] = metrics['Value']
+
+    with open(f'smallModel/outputs/{name}_importances.csv', "w") as file:
+        file.write(importance_frame.to_csv())
+    with open(f'smallModel/outputs/{name}_metrics.csv', "w") as file:
+        file.write(metric_frame.to_csv())
+
+
+#evaluate(target_labels_1)
+#evaluate(target_labels_2)
+#evaluate(target_labels_3)
+#evaluate(target_labels_4)
+
+fill_csv('test')
